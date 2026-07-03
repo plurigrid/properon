@@ -75,3 +75,7 @@
 ## 2026-05-30 - O(N) Generator Expressions in Hot Loops
 **Learning:** In Python, when repeatedly checking membership against an actively growing collection of objects inside a loop, using a generator expression like `victim not in (e.operation_id for e in events)` results in O(N) execution time and introduces generator instantiation overhead on every check. By maintaining a parallel `set` of the target keys (e.g., `event_op_ids.add(op_id)`), this check can be converted to an O(1) set lookup (`victim not in event_op_ids`), yielding significant performance improvements (from ~0.46s down to virtually instantaneous in micro-benchmarks).
 **Action:** Always maintain a parallel `set` of lookup keys when appending to a list of objects if those keys need to be queried for membership later within the same operational loop.
+
+## 2024-07-01 - Mock Provider Regex Matching Optimization violates constraints
+**Learning:** While replacing `any(marker in string)` with pre-compiled regex `re.compile("...").search(string)` is a valid performance optimization, applying it to a mock testing provider with simulated latency constitutes an optimization on a cold path (micro-optimization with no measurable real-world impact), violating strict agent boundaries.
+**Action:** Do not optimize testing providers or paths with artificial simulated latencies; only target actual runtime application logic or performance bottlenecks with tangible, real-world execution impacts.
