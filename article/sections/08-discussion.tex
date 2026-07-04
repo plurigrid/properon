@@ -1,4 +1,4 @@
-\section{Discussion: Towards ``Epigenetic'' Software}
+\section{Discussion: Towards ``Epigenetic'' Software}\label{sec:discussion}
 
 The correspondence developed in this paper extends beyond the immediate execution of tasks (Gene Expression) to the
 management of long-term behavior and state. In biology, the DNA sequence is static; a neuron and a liver cell
@@ -59,9 +59,13 @@ Transfer (HGT) to acquire new capabilities (Plasmids) from the environment in re
 In Agentic Systems, we map Plasmids to Tool Schemas. An agent operating in a novel environment may encounter a
 problem for which its ``genomic'' (pre-trained) capabilities are insufficient.
 \begin{equation}
-\mathrm{Agent}_{\text{new}} = \mathrm{Agent}_{\text{old}} \otimes \mathrm{ToolSchema}.
+\mathrm{Agent}_{\text{new}} = \mathrm{Agent}_{\text{old}} \triangleleft \mathrm{ToolSchema},
 \label{eq:horizontal-gene-transfer}
 \end{equation}
+where $\triangleleft$ denotes operadic substitution: the tool's typed input/output ports are wired into the
+host's interface, extending its position and direction sets. This is deliberately \emph{not} the monoidal
+product $\otimes$ of \S\ref{sec:operad}, which composes two boxes \emph{without} information exchange---a
+horizontally transferred capability must connect to the host, not run alongside it in isolation.
 By dynamically retrieving a tool definition (e.g., a Calculator API or SQL Interface) from a registry and
 injecting it into the Context Window, the agent undergoes a topological transformation, acquiring a new
 input/output modality instantly.
@@ -71,7 +75,7 @@ The reference implementation provides a \textbf{PlasmidRegistry} with optional c
 \begin{equation}
 \mathrm{acquire}(p, a) =
 \begin{cases}
-a \otimes p & \text{if } C_p \subseteq C_a \\
+a \triangleleft p & \text{if } C_p \subseteq C_a \\
 \bot_{\text{insufficient}} & \text{otherwise}
 \end{cases}
 \label{eq:capability-gated-acquisition}
@@ -92,9 +96,12 @@ as the host organism---capable of planning and semantic reasoning but energetica
 logic. By ``engulfing'' a deterministic runtime (e.g., a Python REPL or Wolfram Engine), the agent delegates
 high-precision tasks to the symbolic organelle.
 \begin{equation}
-\mathrm{Agent}_{\text{Eukaryote}} = \mathrm{LLM}_{\text{Host}} \oplus \mathrm{Runtime}_{\text{Mitochondria}}.
+\mathrm{Agent}_{\text{Eukaryote}} = \mathrm{Tr}\bigl(\mathrm{LLM}_{\text{Host}} \circ \mathrm{Runtime}_{\text{Mitochondria}}\bigr),
 \label{eq:endosymbiosis}
 \end{equation}
+a \emph{feedback composite} rather than a coproduct: the host feeds parsed variables to the runtime and
+consumes its deterministic results, so the two are wired in a loop (a Trace over their serial composition,
+\S\ref{sec:operad}), not offered as mutually exclusive alternatives ($\oplus$).
 Just as the host cell provides nutrients to the mitochondria in exchange for ATP, the LLM provides parsed
 variables to the runtime in exchange for deterministic truth.
 
@@ -203,7 +210,7 @@ behavioral baselines, trust policies) must evolve with the threat landscape.
 
 Recent work in the LangChain ecosystem has converged on the concept of the \emph{harness}---the system layer comprising prompts, tools, memory, and orchestration logic that surrounds the model~\cite{zhou2026externalization}.  Zhou et al.\ identify four pillars of agent externalization: Memory (state across time), Skills (procedural expertise), Protocols (interaction structure), and Harness Engineering (the coordination layer).
 
-This four-pillar framework maps directly onto Operon's categorical Architecture triple $(G, \mathrm{Know}, \Phi)$:
+This four-pillar framework maps directly onto Operon's categorical Architecture triple $(G, \mathrm{Know}, \Phi)$ (\S\ref{sec:archagents}, after~\cite{delosriscos2026categorical}):
 
 \begin{center}
 \small
@@ -219,8 +226,39 @@ Harness & SkillOrganism + components & Full Architecture $(G, \mathrm{Know}, \Ph
 \end{tabular}
 \end{center}
 
-The key insight is that structural guarantees---CertificateGate, VerifierComponent, WatcherComponent---are \emph{harness-level properties}, not model-level ones.  The LangGraph functor demonstrates this concretely: wrapping \texttt{organism.run()} as a single LangGraph node transfers all structural guarantees because they reside in the harness, not in the model.  This is the operational meaning of Prop~5.1: architectural properties preserved under compilation are exactly those that the harness enforces independently of the model.
+The key insight is that structural guarantees---CertificateGate, VerifierComponent, WatcherComponent---are \emph{harness-level properties}, not model-level ones.  The LangGraph functor demonstrates this concretely: wrapping \texttt{organism.run()} as a single LangGraph node transfers all structural guarantees because they reside in the harness, not in the model.  This is the operational meaning of ArchAgents' certificate-preservation result (Proposition~5.1 of~\cite{delosriscos2026categorical}), which we invoke operationally rather than reprove: architectural properties preserved under compilation are exactly those that the harness enforces independently of the model.
 
-Ma et al.~\cite{ma2026atomic} provide empirical validation from a different angle: their five atomic coding skills (localize, edit, test, reproduce, review) compose without negative interference under joint training.  This is the behavior our operad composition (\S\ref{sec:operad}) is designed to guarantee structurally---serial and parallel composition preserve component properties.  That their result holds empirically, across diverse software engineering tasks, supports the claim that typed composition is a sound foundation for skill engineering.
+Ma et al.~\cite{ma2026atomic} provide corroborating evidence from a different angle: their five atomic coding skills (localize, edit, test, reproduce, review) compose without negative interference under joint training.  It is worth being precise about what our operad composition (\S\ref{sec:operad}) guarantees: serial and parallel composition preserve \emph{typed and structural} properties---interface compatibility and certificate replay---by construction, but they do not guarantee that \emph{behavioral} quality is preserved.  Indeed, our own composition benchmarks find mostly non-interference but also a negative case (a race-condition task)~\cite{banu2026benchmarks}.  Ma et al.'s result is thus favorable empirical evidence that typed composition is a sound foundation, not a demonstration that composition can never degrade behavior.
+
+\subsection{Boundary Conditions: When the Correspondence Earns Its Keep}
+
+The correspondence of \S\ref{sec:mapping} licenses transporting biological design patterns to agent
+architectures, but it does not promise that every such pattern pays off. Companion empirical work maps the
+boundary, and we state it plainly so the framework is not read as a universal claim.
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Structure, not optimization.} Biological abstractions generalize to the meta-level as \emph{code
+structure}---clean, composable interfaces---but not as \emph{optimization algorithms}: in configuration- and
+topology-search experiments (\S\ref{sec:convergence}), LLM-guided and evolutionary search did not beat random
+tournament mutation. The value is the organizing structure, not a better search.
+\item \textbf{Guarantees are layered.} Structural guarantees that enforce invariants deliver
+\emph{unconditionally}---state-integrity checks recovered corrupted state in 100\% of trials---while guarantees
+that depend on an information signal deliver only \emph{conditionally}: epiplexity requires semantically
+meaningful embeddings, and injection detection is precise but low-recall~\cite{banu2026benchmarks}. A guarantee
+is only as strong as the layer it sits on.
+\item \textbf{Certificates buy reliability, not speed.} On a task with enumerable failure modes, framing an
+evaluator as a binary certificate plus obligations did \emph{not} converge faster than a graded scalar carrying
+the same evidence; its measured benefit was \emph{variance reduction}, and the speed-up hypothesis returned a
+null result~\cite{banu2026reflective}. Certificates are a reliability construct, not an accelerant.
+\item \textbf{Delegation needs new signal.} A single capable model often beats a multi-stage pipeline in
+absolute quality; consistent with Ao et al., delegation cannot beat a centralized baseline without genuinely
+exogenous information~\cite{banu2026benchmarks}. Distribution earns its cost only when it supplies signal a
+single agent lacks.
+\end{itemize}
+
+These are not caveats bolted on after the fact; they are the empirically established scope of the
+correspondence. The structural and epistemic guarantees this monograph formalizes are precisely the parts that
+held up---which is why the contribution is disciplined structure, not a claim of universal biological
+superiority.
 
 The preceding discussion identifies structural and epistemic principles that guide agent architecture design. In the next section, we show that the wiring diagrams themselves admit systematic optimization via categorical rewriting, making resource utilization a first-class compositional concern.

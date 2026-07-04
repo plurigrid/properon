@@ -471,6 +471,13 @@
   note={Empirical companion to \texttt{banu2026harness}. Tests three biologically-grounded reliability features against naive non-biological alternatives and ablated controls across 10M+ data points (1{,}000 trials $\times$ 10 seeds), plus a real-sentence-embedding follow-up and a Gemma~4 27B end-to-end run. Findings: metabolic priority gating serves 100\% of critical operations under bursty load vs 39.8\% for a flat budget counter ($\Delta=+0.602$, $p<0.001$); autoinducer quorum sensing reaches 0\% false-positive rate with 71--87\% true-positive rate at 40\% agent compromise, an operating point unreachable by majority voting or independent detection; Bayesian two-signal stagnation detection wins on convergence discrimination only with real embeddings (96\% vs 2--40\% naive), a conditional guarantee gated on embedding quality. The cross-benchmark pattern: biological design earns its complexity through \emph{mechanism-level structural guarantees}, not algorithmic sophistication --- state-integrity guarantees (DNA repair) are deterministic, while behavioral/output-layer guarantees show honest limitations with capable models. This is the empirical grounding for which $\mathrm{Know}$-level certificates of \texttt{banu2026harness} actually deliver; cited by operon-langgraph-gates v0.1.0 (\S4.1 integrity, \S4.3 real-embedding stagnation).}
 }
 
+@misc{banu2026reflective,
+  title={Counterexample-Guided Reflective Evolution: A GEPA/Operon Certificate Experiment},
+  author={Banu, Bogdan},
+  year={2026},
+  note={Preprint. Tests whether framing a reflective-evolution (GEPA) evaluator as a binary certificate plus per-window obligations converges in fewer mutations than a graded scalar reward of comparable information density. The predeclared gate is not cleared---a null result for the binarization hypothesis---and an $N=10$ replication shows the obligation-bearing arms have near-zero variance while the graded-scalar arm ranges over a factor of five. The certificate's measured value is therefore variance reduction, not faster convergence.}
+}
+
 @article{zhou2026externalization,
   title={Externalization in {LLM} Agents: A Unified Review of Memory, Skills, Protocols and Harness Engineering},
   author={Zhou, Chenyu and Chai, Huacan and Chen, Wenteng and others},
@@ -685,4 +692,26 @@
   archivePrefix={arXiv},
   primaryClass={cs.AI},
   note={ActiveGraph: an event-sourced reactive graph runtime in which the append-only event log is the source of truth, the working graph is a deterministic projection of that log, and behaviors (functions/classes/LLM routines, or logic attached to typed edges) react to graph changes and emit new events. Three named properties: deterministic replay of any run, cheap forking via shared-prefix replay, and end-to-end lineage from goal to individual model call. One formal guarantee: a determinism contract that makes replay sound. Sits in the BabyAGI lineage. Product surface at activegraph.ai. Operon-side placement: §8.8 of external-frameworks.md as an alternative L1 substrate (sibling of LangGraph itself, not of the L1 adapter row); attach-point candidate, no adapter scheduled per the v0.2 pull-gated scope discipline. Delivers Ning et al. (arXiv:2605.18747) §5.2.1 metric dimensions (i), (iv), (vi) but does not supply the §5.2.2 verification-stack-with-explicit-scope abstraction; the operon-langgraph-gates wedge fills that gap.}
+}
+
+@article{knight1986,
+  title={An Experimental Evaluation of the Assumption of Independence in Multiversion Programming},
+  author={Knight, John C. and Leveson, Nancy G.},
+  journal={IEEE Transactions on Software Engineering},
+  volume={SE-12},
+  number={1},
+  pages={96--109},
+  year={1986},
+  note={Landmark empirical refutation of the failure-independence assumption underlying N-version programming: 27 versions developed independently from a common specification, subjected to one million tests, failed on common inputs substantially more often than statistical independence predicts. Grounds the correlated-error case of the conjunctive verification gate---redundant checkers suppress error only to the extent their failure modes are uncorrelated.}
+}
+
+@inproceedings{wang2022selfconsistency,
+  title={Self-Consistency Improves Chain of Thought Reasoning in Language Models},
+  author={Wang, Xuezhi and Wei, Jason and Schuurmans, Dale and Le, Quoc and Chi, Ed and Narang, Sharan and Chowdhery, Aakanksha and Zhou, Denny},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023},
+  eprint={2203.11171},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  note={Samples a diverse set of reasoning paths for a chain-of-thought prompt and marginalizes to the most consistent final answer---an agreement threshold over stochastic samples. The accurate software correspondent for quorum-style consensus (majority agreement across noisy signals), distinct from Mixture-of-Experts routing, which dispatches to specialists rather than voting.}
 }

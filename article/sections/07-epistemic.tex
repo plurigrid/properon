@@ -210,17 +210,17 @@ C_{\mathrm{coord}} = O\!\left(t \cdot \left(1 - \frac{|T_i \cap T_{\mathrm{neede
 \label{eq:tool-coord-overhead}
 \end{equation}
 which approaches $O(t \cdot c_{\mathrm{comm}})$ as $t$ grows for any fixed partition.
-\item[(c)] \textbf{Cross-agent planning overhead:} Agent $i$ must reason about remote tool capabilities---$K_i(K_j(\mathrm{tool}_k \text{ can solve subproblem}))$---a second-order epistemic query. This scales as $O(t \cdot n)$ in the worst case:
+\item[(c)] \textbf{Cross-agent planning overhead:} Agent $i$ must reason about remote tool capabilities---$K_i(K_j(\mathrm{tool}_k \text{ can solve subproblem}))$---a second-order epistemic query. \emph{Absent a shared capability index}, matching each of the $t$ tools against the $n$ agents that might hold it is an all-pairs scan:
 \begin{equation}
-C_{\mathrm{plan}} = O(t \cdot n) \gg O(t)
+C_{\mathrm{plan}} = O(t \cdot n) \gg O(t) \quad\text{(decentralized discovery; worst case)}
 \label{eq:tool-planning-cost}
 \end{equation}
-yielding a multiplicative $n$-factor over the single-agent baseline and bilinear growth when both $t$ and $n$ increase.
+a multiplicative $n$-factor over the single-agent baseline. This factor is an artifact of the discovery model, not an intrinsic epistemic cost: a maintained capability directory reduces the per-tool lookup to $O(1)$ and collapses the bound back to $O(t)$, at the price of maintaining the directory. The $n$-factor is thus the penalty a system pays specifically for \emph{decentralized} tool discovery.
 \end{enumerate}
 \end{theorem}
 
 \paragraph{Assumptions.}
-Tools are partitioned approximately evenly across agents, remote tool use requires explicit discovery and delegation, and the planner may in the worst case need to reason over every tool-agent pairing relevant to the current subgoal.
+Tools are partitioned approximately evenly across agents, remote tool use requires explicit discovery and delegation, and---for the worst-case $O(t \cdot n)$ term---there is no shared capability index, so the planner reasons over every tool--agent pairing relevant to the current subgoal. A maintained directory removes that $n$-factor, leaving $O(t)$.
 
 \paragraph{Operational takeaway.}
 For agentic tool systems, splitting a toolset across agents changes one local decision into three coordination steps: discover who has the tool, delegate execution, then interpret the returned result without the executor's full context. That is why tool-heavy tasks often punish over-distribution.
@@ -244,9 +244,9 @@ As $t$ grows with fixed $n$ and balanced partitions, the local coverage fraction
 
 \textbf{Part (c).} Planning requires not just first-order knowledge of tool outputs but second-order knowledge of other agents' capabilities. Specifically, to construct a multi-step plan, agent $i$ must evaluate propositions of the form $K_i(K_j(\mathrm{tool}_k \text{ can solve subproblem } \varphi))$---``I know that agent $j$ knows that tool $k$ is applicable.''
 
-Consider the Kripke structure. For agent $i$ to establish $K_i(K_j(\varphi))$, we need: for all $s'$ with $s \sim_i s'$, and for all $s''$ with $s' \sim_j s''$, $\varphi$ holds at $s''$. Agent $i$ must reason over $j$'s indistinguishability classes, which requires a model of $j$'s observation partition. This model has size $O(|T_j|) = O(t/n)$ per agent. Since $i$ must model all $n-1$ remote agents, the total planning state is $O((n-1) \cdot t/n) = O(t)$ per planning step. However, for each of the $t$ tools the planner must determine which of $n$ agents can execute it, yielding $O(t \cdot n)$ capability-matching comparisons in the worst case.
+Consider the Kripke structure. For agent $i$ to establish $K_i(K_j(\varphi))$, we need: for all $s'$ with $s \sim_i s'$, and for all $s''$ with $s' \sim_j s''$, $\varphi$ holds at $s''$. Agent $i$ must reason over $j$'s indistinguishability classes, which requires a model of $j$'s observation partition. This model has size $O(|T_j|) = O(t/n)$ per agent. Since $i$ must model all $n-1$ remote agents, the total planning state is $O((n-1) \cdot t/n) = O(t)$ per planning step. The residual cost is capability matching: absent a shared directory, determining which of the $n$ agents holds each of the $t$ tools is an all-pairs scan, $O(t \cdot n)$ comparisons in the worst case; a maintained capability index reduces this to an $O(1)$ per-tool lookup, hence $O(t)$ overall.
 
-Contrast with the single-agent case: planning cost is $O(t)$ (linear scan, no modeling of other agents' capabilities). The multi-agent case introduces a multiplicative factor of $n$ from the second-order epistemic reasoning, so $C_{\mathrm{plan}} = O(t \cdot n)$. For fixed $n$, this is still linear in $t$ but with a larger constant; when $t$ and $n$ grow jointly it becomes bilinear in the two scaling parameters. This explains why increasing tool density in multi-agent systems can produce disproportionate overhead that may negate parallelism benefits.
+Contrast with the single-agent case: planning cost is $O(t)$ (linear scan, no modeling of other agents' capabilities). Decentralized discovery introduces the multiplicative $n$-factor, giving $C_{\mathrm{plan}} = O(t \cdot n)$ in the worst case; with a shared capability index it is $O(t)$, larger only by the constant from the second-order reasoning. Either way, distributing tools converts a local lookup into a discovery-plus-delegation problem, which is why increasing tool density in multi-agent systems can produce disproportionate overhead that may negate parallelism benefits.
 \end{proof}
 
 \paragraph{Consistency Check.} In Kim et al.'s setup, the tool-heavy Workbench domain uses $T = 16$ tools and most MAS configurations use $n = 3$ agents \cite{kim2025scaling}. Under a balanced partition, each agent directly holds only about $T/n \approx 5$ tools, so roughly two-thirds of tool access is remote. The second-order planning term therefore scales from $O(16)$ in SAS to roughly $O(48)$ cross-agent capability checks in the balanced three-agent case. Kim et al. report a strong negative efficiency--tool interaction ($\hat{\beta}_{E_c \times T} = -0.267$, $p < 0.001$), which is consistent with this combinatorial tax. Their results also show that the penalty is topology-dependent rather than absolute: Centralized and Hybrid underperform on Workbench, while Decentralized remains slightly above SAS ($+5.7\%$), so high tool count stresses coordination but does not universally eliminate multi-agent value. In the low-tool regime discussed in the paper ($T \le 4$), the efficiency interaction is negligible.

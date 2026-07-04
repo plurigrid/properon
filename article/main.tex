@@ -82,7 +82,7 @@
 % TITLE BLOCK
 % ==========================================
 \title{\textbf{Biological Motifs for Agentic Control}\\
-\large A Categorical Isomorphism between Gene Regulatory Networks and Autonomous Software Architectures}
+\large A Categorical Correspondence between Gene Regulatory Networks and Autonomous Software Architectures}
 
 \author{
     \textbf{Bogdan Banu} \\
@@ -115,11 +115,15 @@
 
 \maketitle
 
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\small\textit{Note.} This is an older, single-file version of the treatise. The maintained version is the modular monograph (\texttt{monograph.tex} $\to$ \texttt{sections/}), which corrects the formalization: it presents the biology--software relationship as a \emph{typed-interface correspondence}---a shared interpretation into $\mathbf{Coalg}(\Poly)$ in the sense of Marom et al.~\cite{marom2026category}---\emph{not} as a categorical isomorphism. Throughout this document, ``isomorphism'' should be read as ``correspondence.''}}
+\end{center}
+
 % ==========================================
 % ABSTRACT
 % ==========================================
 \begin{abstract}
-The transition of Large Language Models (LLMs) from passive generators to autonomous agents has introduced significant challenges in reliability, security, and state management. Current agentic architectures are often constructed ad-hoc, prone to ``hallucination cascades,'' infinite loops, and prompt injection attacks. This paper proposes that these failure modes are not unique to software but are instances of universal control problems solved by biological systems over billions of years. We present a formal isomorphism between Gene Regulatory Networks (GRNs) and Agentic Software Systems using \textbf{Applied Category Theory}. We model agents as \textbf{Polynomial Functors} within the category $\Poly$, and their interactions via the \textbf{Operad of Wiring Diagrams}. We derive a rigorous syntax for agent composition by mapping biological mechanisms---including \textit{Quorum Sensing} for consensus, \textit{Chaperone Proteins} for structural validation, and \textit{Endosymbiosis} for neuro-symbolic integration---to software design patterns. This framework provides a mathematical basis for ``Epigenetic'' state management (RAG) and the topological defense against adversarial ``Prion'' attacks.
+The transition of Large Language Models (LLMs) from passive generators to autonomous agents has introduced significant challenges in reliability, security, and state management. Current agentic architectures are often constructed ad-hoc, prone to ``hallucination cascades,'' infinite loops, and prompt injection attacks. This paper proposes that these failure modes are not unique to software but are instances of universal control problems solved by biological systems over billions of years. We present a formal \emph{correspondence} between Gene Regulatory Networks (GRNs) and Agentic Software Systems using \textbf{Applied Category Theory}: both are modeled as typed dynamical interfaces (polynomial-functor coalgebras), a shared abstract structure rather than an identity of mechanism. We model agents as \textbf{Polynomial Functors} within the category $\Poly$, and their interactions via the \textbf{Operad of Wiring Diagrams}. We derive a rigorous syntax for agent composition by mapping biological mechanisms---including \textit{Quorum Sensing} for consensus, \textit{Chaperone Proteins} for structural validation, and \textit{Endosymbiosis} for neuro-symbolic integration---to software design patterns. This framework provides a mathematical basis for ``Epigenetic'' state management (RAG) and the topological defense against adversarial ``Prion'' attacks.
 \end{abstract}
 
 % ==========================================
@@ -134,9 +138,9 @@ We argue that these challenges are not novel engineering problems, but fundament
 \subsection{The Biological Heuristic}
 Biology has evolved specific topological structures, known as \textbf{Network Motifs}, to handle noise, security, and state \cite{milo2002network}. We identify four critical biological heuristics that map directly to agentic engineering:
 \begin{itemize}
-    \item \textbf{The Coherent Feed-Forward Loop (CFFL):} Acts as a persistence detector to filter out transient noise, isomorphic to ``Human-in-the-Loop'' guardrails.
-    \item \textbf{Quorum Sensing:} A distributed consensus mechanism where action is taken only when signal density exceeds a threshold, isomorphic to \textbf{Mixture of Experts (MoE)} voting.
-    \item \textbf{Chaperone Proteins:} Molecular cages that force proteins to fold correctly, isomorphic to \textbf{Schema Validators} that enforce structured outputs (JSON).
+    \item \textbf{The Coherent Feed-Forward Loop (CFFL):} Acts as a persistence detector to filter out transient noise, analogous to ``Human-in-the-Loop'' guardrails.
+    \item \textbf{Quorum Sensing:} A distributed consensus mechanism where action is taken only when signal density exceeds a threshold, analogous to \textbf{Mixture of Experts (MoE)} voting.
+    \item \textbf{Chaperone Proteins:} Molecular cages that force proteins to fold correctly, analogous to \textbf{Schema Validators} that enforce structured outputs (JSON).
     \item \textbf{Immunological Self-Defense:} Mechanisms to distinguish self from non-self, essential for preventing \textbf{Prompt Injection} (Prion) attacks.
 \end{itemize}
 
@@ -177,9 +181,9 @@ Techniques such as ``Chain of Thought'' \cite{wei2022chain} utilize iterative lo
 % ==========================================
 % 3. THE MAPPING
 % ==========================================
-\section{The Mapping: Biology $\cong$ Software}
+\section{The Mapping: Biology $\leftrightarrow$ Software}
 
-To treat Agentic Systems and Gene Regulatory Networks (GRNs) as isomorphic, we must map them to a common mathematical object. We utilize the category $\Poly$, where objects are polynomial functors representing interfaces, and morphisms represent interaction protocols.
+To compare Agentic Systems and Gene Regulatory Networks (GRNs) under a common typed-interface abstraction, we map them to a shared mathematical object. We utilize the category $\Poly$, where objects are polynomial functors representing interfaces, and morphisms represent interaction protocols.
 
 \subsection{Preliminaries: The Category $\Poly$}
 In Applied Category Theory, a \textbf{Polynomial Functor} $P$ represents a typed interface for a dynamical system. It is defined as a sum of representable functors:
@@ -215,7 +219,7 @@ This formalism captures the essence of a ``stateful interface'': the system outp
     \label{fig:poly_mushroom}
 \end{figure}
 
-\subsection{The Isomorphism: Genes and Agents}
+\subsection{The Correspondence: Genes and Agents}
 We now apply this abstract definition to our specific domains.
 
 \begin{definition}[The Gene Object]
@@ -299,11 +303,11 @@ By establishing this formal dictionary (Table \ref{tab:dictionary}), we assert t
         \draw[arrow] (agent) -- node[right, font=\footnotesize] {Generation} (act);
         
         % Mapping arrows
-        \draw[<->, dashed, ultra thick, color=gray] (gene) -- node[above, font=\bfseries] {Isomorphism $\cong$} (agent);
+        \draw[<->, dashed, ultra thick, color=gray] (gene) -- node[above, font=\bfseries] {Correspondence} (agent);
         \node[below=1.8cm of gene, font=\small, color=gray] {Category $\Poly$};
         \node[below=1.8cm of agent, font=\small, color=gray] {Category $\Poly$};
     \end{tikzpicture}
-    \caption{The Structural Isomorphism. Both Genes and Agents act as transducers converting Input Contexts ($I$) into Output Expressions ($O$), governed by the same categorical laws.}
+    \caption{The Structural Correspondence. Both Genes and Agents act as transducers converting Input Contexts ($I$) into Output Expressions ($O$), described by the same categorical laws at the level of their typed interfaces.}
     \label{fig:iso}
 \end{figure}
 
@@ -320,7 +324,7 @@ By establishing this formal dictionary (Table \ref{tab:dictionary}), we assert t
     Internal State ($S$) & Epigenetic Markers (Methylation) & Vector Store / Chat History \\ \hline
     Morphism ($\circ$) & Signal Transduction Pathway & Data Pipeline \\ \hline
     \end{tabular}
-    \caption{The Isomorphism Dictionary}
+    \caption{The Correspondence Dictionary}
     \label{tab:dictionary}
 \end{table}
 
@@ -395,7 +399,7 @@ Since $P(E) < 1$, it follows that $P(E)^2 \ll P(E)$.
 \end{theorem}
 
 \begin{proof}
-In $\Operad$, the CFFL is defined as a morphism involving a ``Copy'' operation $\Delta_X: X \to X \otimes X$ and an ``AND-Merge'' operation $\mu: Z \otimes Y \to Out$. The existence of the $\mu$ box in the wiring diagram structurally enforces the independence requirement. This proves that safety is a property of the \textbf{topology}, not just the prompt engineering.
+In $\Operad$, the CFFL is defined as a morphism involving a ``Copy'' operation $\Delta_X: X \to X \otimes X$ and an ``AND-Merge'' operation $\mu: Z \otimes Y \to Out$. The $\mu$ box makes the conjunction \emph{structural}: an action fires only if both the generator's request and the verifier's approval are present. The topology thus supplies the \emph{multiplicative form} of the bound; it does not by itself guarantee that the two error events are statistically independent. That independence is an empirical property of the components populating the boxes---and, as Knight and Leveson~\cite{knight1986} showed for N-version programming, it fails when those components share failure modes. Safety is therefore a property of the topology \emph{and} the diversity of its inhabitants, not of the prompt alone.
 \end{proof}
 
 \begin{figure}[h]
@@ -442,13 +446,13 @@ A distributed topology where multiple agents emit a weak signal $\sigma$ into a 
 
 \begin{itemize}
     \item \textbf{Biological Function:} Many bacteria (e.g., \textit{V. fischeri}) secrete auto-inducer molecules. Individual bacteria do not react to low concentrations. However, once the population density reaches a threshold (Quorum), the concentration of auto-inducers triggers a simultaneous, coordinated gene expression event (e.g., bioluminescence or biofilm formation).
-    \item \textbf{Agentic Isomorphism (Voting Ensembles):} In non-deterministic systems, a single agent's output is noisy. By instantiating $N$ parallel agents (a \textbf{Mixture of Experts}), the system aggregates their outputs. The final action is taken only if the ``concentration'' of a specific semantic token exceeds a confidence threshold. This transforms weak, noisy individual signals into a robust, high-confidence collective action.
+    \item \textbf{Agentic Analogue (Voting Ensembles):} In non-deterministic systems, a single agent's output is noisy. By instantiating $N$ parallel agents (a \textbf{Mixture of Experts}), the system aggregates their outputs. The final action is taken only if the ``concentration'' of a specific semantic token exceeds a confidence threshold. This transforms weak, noisy individual signals into a robust, high-confidence collective action.
 \end{itemize}
 
 \subsection{Chaperone Proteins: Output Structural Validation}
 \begin{itemize}
     \item \textbf{Biological Function:} Newly synthesized proteins emerge as linear chains that must fold into precise 3D structures to function. \textbf{Chaperone Proteins} (e.g., GroEL-GroES) sequester unfolded proteins, preventing aggregation and facilitating correct folding. If a protein fails to fold repeatedly, it is tagged for degradation (Ubiquitination) to prevent toxic buildup.
-    \item \textbf{Agentic Isomorphism (Retry \& Repair Loops):} Generative models output unstructured token streams (``linear chains''). However, downstream agents require strictly structured inputs (e.g., valid JSON Schemas). A \textbf{Validator Agent} acts as a Chaperone: it intercepts the raw output, attempts to parse it into a formal schema (``folding''), and if validation fails, returns the error trace to the generator for re-synthesis. This turns a probabilistic string into a deterministic data structure.
+    \item \textbf{Agentic Analogue (Retry \& Repair Loops):} Generative models output unstructured token streams (``linear chains''). However, downstream agents require strictly structured inputs (e.g., valid JSON Schemas). A \textbf{Validator Agent} acts as a Chaperone: it intercepts the raw output, attempts to parse it into a formal schema (``folding''), and if validation fails, returns the error trace to the generator for re-synthesis. This turns a probabilistic string into a deterministic data structure.
     \item \textbf{Categorical View:} The Chaperone acts as a \textbf{Retraction} map $r: S \to V$ from the free monoid of text to the structured type $V$, such that $r \circ i = id_V$.
 \end{itemize}
 
@@ -459,7 +463,7 @@ A distributed topology where multiple agents emit a weak signal $\sigma$ into a 
 
 A key insight of Systems Biology is that diseases are often not caused by the complete failure of a single component, but by the \textbf{dysregulation of network dynamics}. A cancerous cell still ``works''---in fact, it works too well, reproducing indefinitely. Similarly, catastrophic failures in agentic systems often arise from functional agents interacting in topologically pathological ways.
 
-We classify three primary classes of agentic pathology based on their biological isomorphisms.
+We classify three primary classes of agentic pathology based on their biological analogues.
 
 \subsection{Oncology: Infinite Loops as Unchecked Growth}
 \begin{itemize}
@@ -501,7 +505,7 @@ We classify three primary classes of agentic pathology based on their biological
 % ==========================================
 \section{Discussion: Towards ``Epigenetic'' Software}
 
-The isomorphism presented in this paper extends beyond the immediate execution of tasks (Gene Expression) to the management of long-term behavior and state. In biology, the DNA sequence is static; a neuron and a liver cell possess the exact same genetic code. Their distinct behaviors are determined by \textbf{Epigenetics}---chemical markers (like methylation) that restrict access to certain parts of the genome, effectively biasing the system toward specific outcomes.
+The correspondence presented in this paper extends beyond the immediate execution of tasks (Gene Expression) to the management of long-term behavior and state. In biology, the DNA sequence is static; a neuron and a liver cell possess the exact same genetic code. Their distinct behaviors are determined by \textbf{Epigenetics}---chemical markers (like methylation) that restrict access to certain parts of the genome, effectively biasing the system toward specific outcomes.
 
 \subsection{RAG as Digital Methylation}
 In Agentic Systems, the Large Language Model (LLM) weights act as the DNA---a static, pre-trained substrate of potentiality. To create specialized agents, we do not typically retrain the model (mutation); instead, we use \textbf{Retrieval Augmented Generation (RAG)} and System Prompts.
