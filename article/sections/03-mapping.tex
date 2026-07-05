@@ -217,19 +217,22 @@ the same ambient category:
 \]
 
 \begin{proposition}[Substrate-Independent Correspondence]\label{prop:substrate-independence}
-Each biological and agentic component named in this section admits an interpretation as an object of
-$\mathbf{Coalg}(\mathbf{Poly})$. Every row of Table~\ref{tab:correspondence-dictionary} is a pair $(n,a)$ with
-$n\in\mathsf{Nat}$ and $a\in\mathsf{Art}$ whose interpretations coincide \emph{as typed dynamical interfaces}:
-the same position set $O$ up to relabeling, the same direction family $(I_o)_{o\in O}$, and the same
-readout/update shape.
+The atomic interface objects of the two domains coincide in $\mathbf{Coalg}(\mathbf{Poly})$: the Gene Object
+(Definition~\ref{def:gene-object}) and the Agent-Capability Object (Definition~\ref{def:agent-capability})
+share the functor form $\sum_{o\in O} y^{I_o}$ and the same readout/update signature, so each interprets as an
+object of both $\mathsf{Nat}$ and $\mathsf{Art}$ up to relabeling of the position set $O$ and the direction
+family $(I_o)_{o\in O}$. The remaining rows of Table~\ref{tab:correspondence-dictionary} record
+correspondences at other categorical levels---positions, directions, optics, state spaces, and
+morphisms---not further object-level identities.
 \end{proposition}
 
 \begin{proof}[Proof sketch]
-By construction. Definition~\ref{def:gene-object} fixes the $\mathbf{Poly}$ interpretation of each GRN
-component and Definition~\ref{def:agent-capability} the agentic one; the rows of
-Table~\ref{tab:correspondence-dictionary} are the witnessing pairs, each checked at the level of interface
-signature (position set, direction family, and the readout/update maps of
-Definition~\ref{def:typed-interface}). The claim is confined to that signature.
+By construction. Definitions~\ref{def:gene-object} and~\ref{def:agent-capability} exhibit the two objects with
+identical functor form; matching the position set $O$, the direction family $(I_o)_{o\in O}$, and the
+readout/update maps of Definition~\ref{def:typed-interface} gives the shared interface signature. The claim is
+confined to these interface objects; the table's position-, direction-, optic-, state-, and morphism-level
+rows are correspondences of the respective categorical constituents, established at their own level rather than
+as additional object identities.
 \end{proof}
 
 \paragraph{What this asserts, and what it does not.}
@@ -296,9 +299,10 @@ Lifespan Limit & Telomere Shortening & Operation Counter / Max Iterations\\
 Periodic Scheduling & Circadian Oscillator & Health Checks / Heartbeat\\
 \bottomrule
 \end{tabular}
-\caption{The Correspondence Dictionary (Extended). Each row is a witnessing pair $(n,a)$ for
-Proposition~\ref{prop:substrate-independence}: a GRN component ($n\in\mathsf{Nat}$) and an agentic component
-($a\in\mathsf{Art}$) sharing the same typed-interface signature, not an identity of mechanism.}
+\caption{The Correspondence Dictionary (Extended). The Polynomial Functor row is the object-level
+correspondence of Proposition~\ref{prop:substrate-independence} (Gene Object $\leftrightarrow$ Agent-Capability
+Object); the remaining rows pair the corresponding positions, directions, optics, state spaces, and morphisms
+of the two domains, not further object identities.}
 \label{tab:correspondence-dictionary}
 \end{table}
 

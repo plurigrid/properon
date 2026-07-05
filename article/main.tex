@@ -139,7 +139,7 @@ We argue that these challenges are not novel engineering problems, but fundament
 Biology has evolved specific topological structures, known as \textbf{Network Motifs}, to handle noise, security, and state \cite{milo2002network}. We identify four critical biological heuristics that map directly to agentic engineering:
 \begin{itemize}
     \item \textbf{The Coherent Feed-Forward Loop (CFFL):} Acts as a persistence detector to filter out transient noise, analogous to ``Human-in-the-Loop'' guardrails.
-    \item \textbf{Quorum Sensing:} A distributed consensus mechanism where action is taken only when signal density exceeds a threshold, analogous to \textbf{Mixture of Experts (MoE)} voting.
+    \item \textbf{Quorum Sensing:} A distributed consensus mechanism where action is taken only when signal density exceeds a threshold, analogous to \textbf{self-consistency} / majority voting over sampled outputs (an agreement threshold, distinct from Mixture-of-Experts routing).
     \item \textbf{Chaperone Proteins:} Molecular cages that force proteins to fold correctly, analogous to \textbf{Schema Validators} that enforce structured outputs (JSON).
     \item \textbf{Immunological Self-Defense:} Mechanisms to distinguish self from non-self, essential for preventing \textbf{Prompt Injection} (Prion) attacks.
 \end{itemize}
@@ -446,7 +446,7 @@ A distributed topology where multiple agents emit a weak signal $\sigma$ into a 
 
 \begin{itemize}
     \item \textbf{Biological Function:} Many bacteria (e.g., \textit{V. fischeri}) secrete auto-inducer molecules. Individual bacteria do not react to low concentrations. However, once the population density reaches a threshold (Quorum), the concentration of auto-inducers triggers a simultaneous, coordinated gene expression event (e.g., bioluminescence or biofilm formation).
-    \item \textbf{Agentic Analogue (Voting Ensembles):} In non-deterministic systems, a single agent's output is noisy. By instantiating $N$ parallel agents (a \textbf{Mixture of Experts}), the system aggregates their outputs. The final action is taken only if the ``concentration'' of a specific semantic token exceeds a confidence threshold. This transforms weak, noisy individual signals into a robust, high-confidence collective action.
+    \item \textbf{Agentic Analogue (Voting Ensembles):} In non-deterministic systems, a single agent's output is noisy. By sampling $N$ candidate outputs and voting (\textbf{self-consistency} / majority voting), the system aggregates them. The final action is taken only if the ``concentration'' of a specific semantic token exceeds a confidence threshold. This transforms weak, noisy individual signals into a robust, high-confidence collective action. (This is distinct from a Mixture of Experts, which routes to specialist sub-models rather than counting agreement.)
 \end{itemize}
 
 \subsection{Chaperone Proteins: Output Structural Validation}
