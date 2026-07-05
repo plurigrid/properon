@@ -13,8 +13,11 @@ calculations, not benchmark measurements.
 
 \subsection{Reviewer Gates and Correlated Failure}
 
-A minimal reviewer gate can be modeled as a coherent feed-forward loop: a generator proposes an action,
-but the action is released only if a reviewer also emits approval.
+A minimal reviewer gate has the conjunctive (AND-gate) shape of a coherent feed-forward loop---a generator
+proposes an action, released only if a reviewer also approves---but its function is redundant verification, the
+topology of the two-person rule and N-version programming~\cite{knight1986}, rather than the temporal
+persistence-detection the biological motif performs. Its benefit is therefore contingent on the two failure
+events being uncorrelated, as the theorem below makes precise.
 
 \begin{theorem}[Reviewer-Gated Error Suppression]
 \label{thm:reviewer-gate}

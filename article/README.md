@@ -13,7 +13,7 @@ Each `paperN/` directory is a standalone paper with its own `main.tex`,
 | [`paper3`](paper3/) | Do Biological Abstractions Generalize to Meta-Level AI Systems Engineering? | Evolution loop over Genome configs; negative result — bio abstractions generalize as code structure, not as optimization algorithms | Complete (5pp, short-form) |
 | [`paper4`](paper4/) | Do Biological Structural Guarantees Earn Their Complexity? | Three deep benchmarks (metabolic gating, quorum sensing, Bayesian stagnation) vs. naive baselines at 10M+ trials | Complete (16pp, arXiv zip prepared) |
 | [`paper5`](paper5/) | Harness Engineering as Categorical Architecture | ArchAgents triple $(G, \mathrm{Know}, \Phi)$ as formalization for agent harnesses; 100% certificate preservation across 5 compiler targets | Complete (15pp, arXiv zip committed in v0.34.4) |
-| [`paper6`](paper6/) | Counterexample-Guided Reflective Evolution | GEPA with binary-plus-obligations evaluator vs scalar reward; Gemma 4, 10 seeds × 3 arms | WIP (10pp) — unresolved `\placeholder` in abstract (1) + results (10) |
+| [`paper6`](paper6/) | Counterexample-Guided Reflective Evolution | GEPA with binary-plus-obligations evaluator vs scalar reward; Gemma 4, 10 seeds × 3 arms | Complete (10pp) — all placeholders resolved (2026-05-27); **Null** verdict for the binarization hypothesis (certificate value is variance reduction, not convergence speedup) |
 
 ## Monograph
 

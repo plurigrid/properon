@@ -10,11 +10,14 @@ We classify four primary classes of agentic pathology based on their biological 
 \subsection{Oncology: Infinite Loops as Epistemic Starvation}
 
 \begin{itemize}[leftmargin=*]
-\item \textbf{Biological Pathology (Cancer):} In a healthy cell, the cell cycle is driven by a positive feedback
-loop (Cyclins) but constrained by negative feedback ``checkpoints'' (e.g., the p53 gene). If p53 is mutated,
-the negative feedback is severed. The positive loop runs unchecked, leading to exponential proliferation
-(tumor growth). Crucially, cells require continuous \textit{trophic factors} (novel signals from their
-environment) to inhibit suicide programs; lack of external signaling triggers apoptosis.
+\item \textbf{Biological Pathology (Cancer):} In a healthy cell, the cell cycle is driven by positive feedback
+(Cyclins) but restrained by checkpoint controls---most famously p53, the ``guardian of the genome,'' which
+halts the cycle or triggers apoptosis in response to DNA damage and other stress. Loss of such a checkpoint
+removes an arrest/termination signal, so proliferation can continue when it should stop. Cancer is multi-hit
+rather than the failure of any single gene, and tumor growth is typically sub-exponential (Gompertzian) rather
+than cleanly exponential; we use ``unchecked growth'' only for the qualitative loss of a stop signal.
+Relatedly, many cell types---classically neurons dependent on nerve growth factor---require continuous
+\textit{trophic factors} to suppress apoptosis, so withdrawal of external signaling triggers programmed death.
 \item \textbf{Agentic Pathology (The Recursive Hang):} Two agents get stuck in a politeness loop (e.g.,
 ``Thank you,'' ``You're welcome'') or a debugger agent continuously generates new bugs to fix old ones.
 The system is active, but the state is stagnant.
@@ -63,6 +66,16 @@ loops, we compute the \textbf{Epiplexic Integral} over a sliding window of $k$ s
 Apoptosis triggers when $\mathcal{E}_{\text{window}} < \delta$ \textit{and} no terminal action
 (task completion, user handoff) has been signaled.
 
+\textbf{Fidelity of the proxy.} Equation~\ref{eq:epiplexity-approx} is a heuristic surrogate, not an estimator
+of the Kullback--Leibler surprise in Eq.~\ref{eq:epiplexity-kl}: cosine distance and normalized perplexity
+track \emph{surface} novelty, which coincides with genuine belief update only when the embedding geometry
+carries task-relevant semantics. This gap is empirical, not merely notional. In controlled
+benchmarks~\cite{banu2026benchmarks}, the two-signal detector separates convergence from stagnation only with
+semantically meaningful (real) embeddings; with low-quality embeddings the novelty term is effectively noise
+and a single-signal baseline does better, and even with real embeddings a naive cosine-repetition detector wins
+on exact-loop detection. The proxy is thus a signal-quality-dependent monitor: $\alpha$, $\delta$, and the
+embedding model must be validated per deployment, not assumed.
+
 \item \textbf{Treatment:} Implementation of an \textbf{Epiplexic Checkpoint}. A meta-monitor observes the
 sliding-window Epiplexity. If it drops below threshold without task completion, the monitor triggers
 Apoptosis---the agentic equivalent of trophic factor withdrawal. The system may optionally attempt a
@@ -99,9 +112,13 @@ the contaminated context across trust boundaries (and can be amplified by embedd
 valid authorization.
 \item \textbf{Categorical Diagnosis:} A violation of Information Flow Security within the Operad. The injection
 acts as a topological defect that bypasses the Schema/Lens filter by mimicking the structure of a trusted signal.
-\item \textbf{Treatment:} Denaturation Layers. Implementing an intermediate transformation layer (e.g.,
-paraphrasing or sanitization) between agents that disrupts the specific syntax (folding) required for the
-injection to work, rendering the ``prion'' inert.
+\item \textbf{Treatment:} Breaking the templating contact. The corrupt agent is not neutralized by
+``denaturation''---misfolded prion aggregates (PrP\textsuperscript{Sc}) are in fact notoriously resistant to
+heat and proteolysis. Propagation is instead blocked when the template cannot contact a compatible substrate,
+as in the \emph{species barrier}, where sequence mismatch halts cross-seeding. The software analogue is an
+intermediate transformation layer (paraphrasing, sanitization, or re-encoding) between agents that changes the
+representation the injection relies on, so the malicious ``conformation'' can no longer template the next
+agent's context.
 \end{itemize}
 
 \subsection{Ischemia: Resource Exhaustion}

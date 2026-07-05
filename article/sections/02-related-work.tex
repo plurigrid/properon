@@ -15,9 +15,22 @@ mapping these motifs to the stochastic nature of Generative AI.
 \subsection{Applied Category Theory (ACT)}
 
 To formalize network structure, we draw upon ACT. Fong and Spivak~\cite{fong2019seven} provide a comprehensive introduction to Applied Category Theory. Spivak~\cite{spivak2021learners} and Vagner et al.~\cite{vagner2015algebras} established a rigorous framework
-for modeling Open Dynamical Systems using the category $\mathbf{Poly}$ and the Operad of Wiring Diagrams. Niu and Spivak~\cite{niu2023polynomial} develop the full mathematical theory of polynomial functors as a language for interaction. To our
+for modeling Open Dynamical Systems using the category $\mathbf{Poly}$ and the Operad of Wiring Diagrams. Niu and Spivak~\cite{niu2023polynomial} develop the full mathematical theory of polynomial functors as a language for interaction. Marom et al.~\cite{marom2026category} independently relate biological and engineered stimulus--response systems by a structure-preserving functor between subcategories of dynamical systems, articulating the substrate-independence principle we adopt in \S\ref{sec:mapping}: systems sharing compositional structure can be related by interface logic alone, without sharing a physical substrate. To our
 knowledge, this is the first application of Polynomial Functors specifically designed to model the interface of
 LLM Agents and to verify safety properties in Agentic topologies.
+
+\subsection{The Architecture Triple}\label{sec:archagents}
+
+De los Riscos et al.~\cite{delosriscos2026categorical} introduce the \textsc{ArchAgents} category, whose objects
+are \emph{Architecture triples} $A=(G,\mathrm{Know},\Phi)$: $G$ is the syntactic wiring (typed modules and
+ports), $\mathrm{Know}$ is the structural knowledge the architecture maintains---its invariants and
+\emph{certificates}---and $\Phi$ is the deployment map from abstract capability slots to concrete model and
+tool implementations. A \emph{certificate} is a triple $(\tau,\sigma,\mathrm{evds})$: a theorem statement
+$\tau$, a map $\sigma$ from its symbols to architecture parameters, and a mechanically replayable derivation
+$\mathrm{evds}$~\cite{banu2026harness}. Morphisms are structure-preserving translations---in practice,
+\emph{compilers} between frameworks. Together with the shared-interface correspondence of \S\ref{sec:mapping},
+this triple is one of the two categorical objects this monograph builds on; it recurs below as the carrier of
+Operon's structural guarantees.
 
 \subsection{Reliability in Agentic AI}
 
@@ -48,6 +61,6 @@ Feng, Wang, and Zhu~\cite{feng2026selfevolving} propose Self-evolving Embodied A
 
 Zhou et al.~\cite{zhou2026externalization} provide a unified review of agent externalization through four pillars---Memory, Skills, Protocols, and Harness Engineering---tracing the progression from weights-based to harness-centric agent design.  Their framework maps directly onto Operon's categorical Architecture triple: Memory corresponds to the coalgebraic state (BiTemporalMemory), Skills to objects composed via the agentic operad (SkillStage), Protocols to syntactic wiring (WiringDiagram), and the Harness to the full Architecture $(G, \mathrm{Know}, \Phi)$.  Their observation that ``agent infrastructure transforms hard cognitive burdens into manageable forms'' is precisely the claim our structural guarantee benchmarks (\S\ref{sec:empirical}) validate empirically.
 
-Ma et al.~\cite{ma2026atomic} demonstrate that five atomic coding skills---code localization, editing, unit-test generation, issue reproduction, and code review---compose without negative interference under joint reinforcement learning.  These atomic skills function as basis vectors for complex software engineering tasks, achieving 18.7\% average improvement over task-specific optimization.  This result validates Operon's operad composition model (\S\ref{sec:operad}): the serial and parallel composition operations preserve skill quality, just as Ma et al.'s joint RL preserves atomic skill performance across compositions.
+Ma et al.~\cite{ma2026atomic} demonstrate that five atomic coding skills---localization, editing, unit-test generation, issue reproduction, and code review---compose without negative interference under joint reinforcement learning, an 18.7\% average improvement over task-specific optimization. This is favorable empirical evidence for the operad composition model (\S\ref{sec:operad}), with one caveat we keep explicit: the operad preserves \emph{typed and structural} properties (interface compatibility, certificate replay) by construction, but \emph{behavioral} quality under composition is empirical---our own benchmarks find mostly non-interference alongside one negative case~\cite{banu2026benchmarks}.
 
 We apply bi-temporal data management~\cite{snodgrass2000temporal, kulkarni2012temporal} to agentic memory in \S\ref{sec:coalgebra} and \S\ref{sec:temporal-epistemics}.

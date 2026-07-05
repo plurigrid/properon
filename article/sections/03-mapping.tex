@@ -1,4 +1,4 @@
-\section{The Mapping: Biology $\leftrightarrow$ Software}
+\section{The Mapping: Biology $\leftrightarrow$ Software}\label{sec:mapping}
 
 To compare Agentic Systems and Gene Regulatory Networks (GRNs) under a common typed-interface
 abstraction, we map selected components from both domains to a shared mathematical object. We
@@ -161,7 +161,8 @@ $i\in I_{o(s)}$ compatible with its current output $o(s)$, what is my new state?
 
 By establishing this formal dictionary (Table~\ref{tab:correspondence-dictionary}), we can compare selected GRN components and agentic
 components as instances of the same abstract class of typed dynamical interfaces \textbf{under this
-interface-level abstraction}.
+interface-level abstraction}. Proposition~\ref{prop:substrate-independence} below states precisely what this
+shared membership does and does not assert.
 
 \paragraph{Composable Coalgebras.}
 The coalgebra formalism becomes most useful when made composable. We define two composition operations that mirror the parallel and serial composition of the Operad (\S4):
@@ -189,6 +190,60 @@ S_{\mathrm{bt}} \;=\; S \times \underbrace{[\mathcal{T}, \mathcal{T} \cup \{\inf
 where an open-ended interval $[t, \infty)$ denotes a currently active fact. The key invariant is \emph{append-only correction}: closing a record's transaction interval and appending a new record with a \texttt{supersedes} pointer, rather than mutating the original. This ensures that for any pair $(t_v, t_r)$, the \emph{belief state}---the set of facts valid at $t_v$ and known at $t_r$---is uniquely reconstructible by filtering on both intervals simultaneously.
 
 The readout function becomes time-parameterized: $\mathrm{readout}(s, t_v, t_r)$ returns only those facts whose valid interval contains $t_v$ and whose record interval contains $t_r$. This separates two questions that a single-time coalgebra conflates: ``what is true now?'' (valid-time query) versus ``what did the system believe at decision time?'' (bi-temporal query). The implementation (\S\ref{sec:bitemporal-impl}) instantiates this as \texttt{BiTemporalMemory} with explicit \texttt{retrieve\_valid\_at}, \texttt{retrieve\_known\_at}, and \texttt{retrieve\_belief\_state} methods.
+
+\subsection{The Correspondence, Made Precise}
+
+The dictionary of Table~\ref{tab:correspondence-dictionary} is more than a list of analogies: both genes and
+agent capabilities have been presented as objects of a single mathematical kind---polynomial-functor
+coalgebras. We name that kind and state exactly what the two domains share.
+
+\begin{definition}[Typed Dynamical Interface]\label{def:typed-interface}
+A \emph{typed dynamical interface} is an object of $\mathbf{Coalg}(\mathbf{Poly})$: a pair $(S,\phi)$ with
+structure map $\phi\colon S \to P(S)$ for a polynomial functor $P$, equivalently a readout $S \to O$ together
+with an update $\sum_{s\in S} I_{o(s)} \to S$ (Eq.~\ref{eq:coalgebra-structure}). A morphism
+$(S_1,\phi_1)\to(S_2,\phi_2)$ is a coalgebra homomorphism: a map of state spaces commuting with the structure
+maps, hence one that preserves observable behavior in the sense of Eq.~\ref{eq:bisimulation}.
+\end{definition}
+
+Definitions~\ref{def:gene-object} and~\ref{def:agent-capability} exhibit the Gene Object and the
+Agent-Capability Object as two such interfaces. Following Marom et al.~\cite{marom2026category}---who relate
+biological and engineered stimulus--response systems by a structure-preserving functor rather than by
+identifying their substrates---we regard the biological and software realizations as two full subcategories of
+the same ambient category:
+\[
+\mathsf{Nat} \subset \mathbf{Coalg}(\mathbf{Poly})\ \ (\text{GRN realizations}),
+\qquad
+\mathsf{Art} \subset \mathbf{Coalg}(\mathbf{Poly})\ \ (\text{agentic realizations}).
+\]
+
+\begin{proposition}[Substrate-Independent Correspondence]\label{prop:substrate-independence}
+The atomic interface objects of the two domains coincide in $\mathbf{Coalg}(\mathbf{Poly})$: the Gene Object
+(Definition~\ref{def:gene-object}) and the Agent-Capability Object (Definition~\ref{def:agent-capability})
+share the functor form $\sum_{o\in O} y^{I_o}$ and the same readout/update signature, so each interprets as an
+object of both $\mathsf{Nat}$ and $\mathsf{Art}$ up to relabeling of the position set $O$ and the direction
+family $(I_o)_{o\in O}$. The remaining rows of Table~\ref{tab:correspondence-dictionary} record
+correspondences at other categorical levels---positions, directions, optics, state spaces, and
+morphisms---not further object-level identities.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+By construction. Definitions~\ref{def:gene-object} and~\ref{def:agent-capability} exhibit the two objects with
+identical functor form; matching the position set $O$, the direction family $(I_o)_{o\in O}$, and the
+readout/update maps of Definition~\ref{def:typed-interface} gives the shared interface signature. The claim is
+confined to these interface objects; the table's position-, direction-, optic-, state-, and morphism-level
+rows are correspondences of the respective categorical constituents, established at their own level rather than
+as additional object identities.
+\end{proof}
+
+\paragraph{What this asserts, and what it does not.}
+The correspondence is a shared \emph{interface} semantics, not an isomorphism. We do not exhibit a mutually
+inverse pair of functors between $\mathsf{Nat}$ and $\mathsf{Art}$, and we make no claim that the two domains
+agree in mechanism, kinetics, or failure distribution---the empirical sections below in fact document regimes
+where the biological structure confers no advantage over a naive baseline. In the words of Marom et al., two
+systems that share compositional structure can be related by a functor that ``preserves the interface logic
+\ldots without requiring that the two domains share any physical substrate.'' That substrate
+independence---not equivalence---is the content of Proposition~\ref{prop:substrate-independence}, and it is
+what licenses transporting a design pattern read off a gene-regulatory motif to an agent architecture at all.
 
 \begin{figure}[h]
 \centering
@@ -244,7 +299,10 @@ Lifespan Limit & Telomere Shortening & Operation Counter / Max Iterations\\
 Periodic Scheduling & Circadian Oscillator & Health Checks / Heartbeat\\
 \bottomrule
 \end{tabular}
-\caption{The Correspondence Dictionary (Extended)}
+\caption{The Correspondence Dictionary (Extended). The Polynomial Functor row is the object-level
+correspondence of Proposition~\ref{prop:substrate-independence} (Gene Object $\leftrightarrow$ Agent-Capability
+Object); the remaining rows pair the corresponding positions, directions, optics, state spaces, and morphisms
+of the two domains, not further object identities.}
 \label{tab:correspondence-dictionary}
 \end{table}
 
@@ -320,7 +378,7 @@ The structure map $\alpha: S \to P(S) + \bot$ is defined as a \textbf{partial ma
 
 This structure maps to the energetics of transcriptional elongation. A gene or agent capability cannot produce its output instantaneously; it must carry out a sequence of state transitions, each with a cost. The Metabolic Coalgebra models this dependency: if the cellular or computational energy budget is exhausted, execution stalls (Ischemia), and the component fails to execute its function, regardless of its regulatory logic.
 
-This formalism establishes that ``Ischemia'' (Token Starvation) is not merely a runtime error, but a reachable terminal state $\bot$ in the system's dynamics. This mirrors the biological mechanism where failure to meet metabolic costs triggers p53-mediated apoptosis \cite{aubrey2018p53}.
+This formalism establishes that ``Ischemia'' (Token Starvation) is not merely a runtime error, but a reachable terminal state $\bot$ in the system's dynamics. This mirrors the biological mechanism where a cell that cannot meet its energetic demands undergoes programmed death: energy stress is sensed by pathways such as AMPK, which can in turn engage p53-dependent apoptosis \cite{aubrey2018p53}.
 
 
 \begin{theorem}[The Metabolic Bound (Qualified)]\label{thm:metabolic-bound}
@@ -397,7 +455,7 @@ In agentic systems, Telomeres map to \textbf{lifecycle management}:
 This provides a biological basis for the common pattern of limiting agent iterations. Rather than arbitrary timeouts, the telomere model frames lifecycle limits as a natural property of the system's ``cellular age.''
 
 \paragraph{Mitochondria: The Metabolic Motherboard.}
-Recent scholarship reframes mitochondria not merely as the cell's powerhouse, but as the \textbf{Mitochondrial Information Processing System (MIPS)} \cite{picard2022mips}. Mitochondria sense environmental stress and integrate metabolic signals to govern cellular decision-making. They function as ``social signaling organelles'' that communicate with the nucleus and other organelles.
+Recent scholarship reframes mitochondria not merely as the cell's powerhouse, but as the \textbf{Mitochondrial Information Processing System (MIPS)} \cite{picard2022mips}. Mitochondria sense environmental stress and integrate metabolic signals that shape cellular decision-making. They function as ``social signaling organelles'' that communicate with the nucleus and other organelles.
 
 In agentic systems, the Mitochondria maps to the \textbf{Runtime Supervisor}:
 \begin{itemize}[leftmargin=*]

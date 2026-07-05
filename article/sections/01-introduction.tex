@@ -20,10 +20,12 @@ identity of mechanisms, is the organizing hypothesis of the paper.
 Biology has evolved specific topological structures, known as Network Motifs, to handle noise, security,
 and state~\cite{milo2002network}. We identify five critical biological heuristics that map directly to agentic engineering:
 \begin{itemize}[leftmargin=*]
-\item The Coherent Feed-Forward Loop (CFFL): Acts as a persistence detector to filter out transient noise,
-analogous to ``Human-in-the-Loop'' guardrails.
+\item The Coherent Feed-Forward Loop (CFFL): in biology a persistence detector that filters transient input
+pulses~\cite{alon2007network}; its conjunctive (AND-gate) form underlies redundant-verification gates such as
+``Human-in-the-Loop'' guardrails, where an action requires a second, independent approval.
 \item Quorum Sensing: A distributed consensus mechanism where action is taken only when signal density
-exceeds a threshold, analogous to Mixture of Experts (MoE) voting.
+exceeds a threshold, analogous to self-consistency or majority voting over sampled outputs (an agreement
+threshold, distinct from Mixture-of-Experts routing).
 \item Chaperone Proteins: Molecular cages that force proteins to fold correctly, analogous to Schema
 Validators that enforce structured outputs (JSON).
 \item Mitochondrial Information Processing: Metabolic constraints acting as a ``Motherboard'' for
@@ -40,6 +42,9 @@ as described by Spivak~\cite{spivak2021learners}.
 We use $\mathbf{Poly}$ as a common language for typed interfaces and wiring diagrams as a language for
 composition. The claim is not that GRNs and software agents are identical physical systems, but that
 selected biological and agentic components can be compared within the same interface-level formalism.
+Proposition~\ref{prop:substrate-independence} states this precisely as a shared interpretation into the
+category $\mathbf{Coalg}(\mathbf{Poly})$---a substrate independence in the sense of Marom
+et al.~\cite{marom2026category}, not an isomorphism between the domains.
 A capability is then described not by its weights, but by its interface---a dynamical system consuming
 observations and producing actions:
 \begin{equation}

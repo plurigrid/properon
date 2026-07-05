@@ -74,11 +74,20 @@ high-stakes tasks.
 \paragraph{Reading convention.}
 For readers coming from AI agent systems rather than category theory, each result in this section should be read in three layers: the wiring diagram tells us which signals or approvals can reach an action sink; the stochastic or trust model assigns probabilities or integrity levels to those signals; the proof then converts that structural constraint into a failure or authorization bound.
 
-\paragraph{Network Motif 1 (Coherent Feed-Forward Loop).}
-A topological structure where Signal $X$ activates $Z$ directly, but also activates $Y$ which gates $Z$. The node
-$Z$ functions as an AND gate: it fires if and only if $X \wedge Y$.
+\paragraph{Network Motif 1 (Conjunctive Verification Gate).}
+The biological \emph{coherent feed-forward loop} (C1-FFL)---an input $X$ activating a target $Z$ both directly
+and through an intermediate $Y$ under AND logic---is classically a \emph{sign-sensitive delay}: it filters out
+transient activating pulses of $X$, responding only to persistent input, while switching off without
+delay~\cite{alon2007network}. The pattern we analyze below reuses this conjunctive (AND-gate) \emph{geometry}
+for a different purpose. A generator drives an action $Z$ directly (signal $X$), while an independent verifier
+$Y$ must also approve, so $Z$ fires if and only if $X \wedge Y$. Functionally this is a
+\emph{redundant-verification} motif---the topology of the two-person rule and of N-version
+programming~\cite{knight1986}---and its benefit is the multiplicative suppression of a shared error under
+\emph{independent} failures, not the temporal filtering the biological C1-FFL provides. We retain the
+``feed-forward'' descriptor for the shared conjunctive shape, but state the guarantee for the verification
+reading.
 
-\begin{theorem}[Error Suppression in CFFL]\label{thm:cffl-error-suppression}
+\begin{theorem}[Error Suppression under Conjunctive Verification]\label{thm:cffl-error-suppression}
 Let $A_{\mathrm{gen}}$ be a generator agent and $A_{\mathrm{ver}}$ be a verifier agent. Let
 $E_{\mathrm{gen}}$ denote the event that the generator emits an erroneous candidate, and let
 $M_{\mathrm{ver}}$ denote the event that the verifier \emph{misses} that error and still emits an approval token.
@@ -121,7 +130,10 @@ with $\rho \in \left[-\min\!\left(\frac{p}{1-p},\frac{1-p}{p}\right),\,1\right]$
 This result makes precise when the CFFL topology provides genuine safety benefits:
 \begin{itemize}[leftmargin=*]
 \item \textbf{High correlation:} Reusing the same model family, prompt structure, or evidence sources can
-make verifier misses positively correlated with generator errors, erasing much of the gain.
+make verifier misses positively correlated with generator errors, erasing much of the gain. This is not a
+hypothetical concern: Knight and Leveson~\cite{knight1986} found that independently developed program versions
+failed on common inputs substantially more often than independence predicts, refuting the analogous
+failure-independence assumption for N-version programming.
 \item \textbf{Heterogeneous generators and verifiers:} Prompt diversity or model-family diversity can
 reduce correlation, but the magnitude is empirical rather than universal.
 \item \textbf{Orthogonal checks:} Symbolic or tool-grounded verifiers are a useful limiting case because
@@ -184,25 +196,33 @@ The Fr\'echet--Hoeffding bounds then give the admissible range of $\rho$. The to
 
 \paragraph{Network Motif 2 (Quorum Sensing).}
 A distributed topology where multiple agents emit a weak signal $\sigma$ into a shared environment. An effector
-node $E$ activates if and only if the concentration $[\sigma] > \theta$.
+node $E$ activates once the accumulated concentration crosses a threshold, $[\sigma] > \theta$. In biology this
+switch is not a clean step but a graded, positive-feedback response that is frequently bistable and hysteretic;
+we use $[\sigma] > \theta$ as an idealization of that density-dependent activation.
 \begin{itemize}[leftmargin=*]
-\item \textbf{Biological Function:} Many bacteria (e.g., \emph{V. fischeri}) secrete auto-inducer molecules.
-Individual bacteria do not react to low concentrations. However, once the population density reaches a threshold
-(Quorum), the concentration of auto-inducers triggers a simultaneous, coordinated gene expression event (e.g.,
-bioluminescence or biofilm formation).
-\item \textbf{Agentic Correspondence (Voting Ensembles):} In non-deterministic systems, a single agent's output is
-noisy. By instantiating $N$ parallel agents (a Mixture of Experts), the system aggregates their outputs. The
-final action is taken only if the ``concentration'' of a specific semantic token exceeds a confidence threshold.
-This transforms weak, noisy individual signals into a robust, high-confidence collective action.
+\item \textbf{Biological Function:} Many bacteria (e.g., \emph{V. fischeri}) secrete auto-inducer molecules
+whose own synthesis is auto-inducer-activated. At low population density the response is off; as density rises,
+positive feedback in the LuxI/LuxR circuit drives a sharp---often bistable and hysteretic---switch to
+coordinated gene expression (e.g., bioluminescence or biofilm formation). The activation is thus
+density-dependent and self-amplifying rather than an instantaneous threshold crossing.
+\item \textbf{Agentic Correspondence (Consensus Voting):} In non-deterministic systems, a single agent's output
+is noisy. Sampling $N$ candidates and acting only when agreement on an answer exceeds a threshold
+---\emph{self-consistency} or majority voting~\cite{wang2022selfconsistency}---converts weak, noisy individual
+signals into a higher-confidence collective decision, matching the density-dependent threshold above. This is
+distinct from a Mixture of Experts, which \emph{routes} a query to specialist sub-models rather than counting
+agreement: the quorum analogue is the vote, not the router. Empirically, a threshold-with-decay realization of
+this motif occupies a precision--recall operating point---zero false positives with meaningful detection---that
+neither independent per-agent detection nor naive majority voting reaches~\cite{banu2026benchmarks}.
 \end{itemize}
 
 \subsection{Chaperone Proteins: Output Structural Validation}
 
 \begin{itemize}[leftmargin=*]
 \item \textbf{Biological Function:} Newly synthesized proteins emerge as linear chains that must fold into
-precise 3D structures to function. Chaperone Proteins (e.g., GroEL-GroES) sequester unfolded proteins,
-preventing aggregation and facilitating correct folding. If a protein fails to fold repeatedly, it is tagged for
-degradation (Ubiquitination) to prevent toxic buildup.
+precise 3D structures to function. Chaperone proteins (e.g., the bacterial GroEL-GroES chaperonin, or the
+eukaryotic Hsp70/Hsp90 systems) sequester unfolded proteins, preventing aggregation and facilitating correct
+folding. Proteins that repeatedly fail to fold are cleared by regulated proteolysis---in eukaryotes via
+ubiquitin-tagged degradation---to prevent toxic buildup.
 \item \textbf{Agentic Correspondence (Retry \& Repair Loops):} Generative models output unstructured token streams
 (``linear chains''). However, downstream agents require strictly structured inputs (e.g., valid JSON Schemas).
 A Validator Agent acts as a Chaperone: it intercepts the raw output, attempts to parse it into a formal schema
@@ -262,7 +282,7 @@ A topology that maintains a dynamic repertoire of ``detectors'' capable of disti
 \begin{itemize}[leftmargin=*]
 \item \textbf{Biological Function:} The adaptive immune system solves a fundamental discrimination problem: how to attack foreign pathogens while sparing the body's own tissues. Key mechanisms include:
 \begin{itemize}
-\item \textbf{MHC Presentation:} All cells display fragments of their internal proteins on Major Histocompatibility Complex molecules. T-cells inspect these ``identity cards'' to verify cellular integrity.
+\item \textbf{MHC Presentation:} Most nucleated cells display fragments of their internal proteins on class~I Major Histocompatibility Complex (MHC-I) molecules. Cytotoxic T-cells inspect these ``identity cards'' to verify cellular integrity.
 \item \textbf{Clonal Selection:} T-cells with receptors matching self-antigens are deleted during development (negative selection), while those matching foreign antigens are amplified upon exposure.
 \item \textbf{Regulatory T-cells:} A population that actively suppresses immune responses to prevent autoimmunity.
 \end{itemize}
