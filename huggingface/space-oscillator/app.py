@@ -344,7 +344,7 @@ Checkpoints between phases ensure quality: G1/S checkpoint (commit to replicatio
         duration_str = f"{duration:.2f}h" if duration >= 0.01 else f"{duration * 3600:.0f}s"
         table_lines.append(
             f"| **{name}** | {duration_str} | {fraction * 100:.0f}% | "
-            f'<span style="display:inline-block;width:{bar_width}px;height:16px;'
+            f'<span aria-hidden="true" style="display:inline-block;width:{bar_width}px;height:16px;'
             f'background:{color};border-radius:3px"></span> |'
         )
     table_md = "\n".join(table_lines)
