@@ -125,7 +125,7 @@ def _tiers_html(result):
         bar_width = min(count * 20, 100)
         rows += f"""<div style="margin-bottom:8px">
             <span style="display:inline-block;width:100px;color:{color};font-weight:600;font-size:13px">{tier}</span>
-            <span style="display:inline-block;width:{bar_width}%;height:16px;background:{color};border-radius:3px;opacity:0.4"></span>
+            <span aria-hidden="true" style="display:inline-block;width:{bar_width}%;height:16px;background:{color};border-radius:3px;opacity:0.4"></span>
             <span style="color:#888;font-size:12px;margin-left:8px">{count}</span>
         </div>"""
     return f'<div style="padding:12px">{rows}</div>'
